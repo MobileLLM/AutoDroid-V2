@@ -18,7 +18,7 @@ from agent.droidbot.device import Device
 from agent.droidbot.app import App
 from agent.droidbot.input_event import RestartAppEvent
 from agent.code_agent import CodeAgent
-from agent.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, regenerate_script, _save2log
+from agent.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, regenerate_script, _save2log, ElementList
 from agent.script_utils.api_doc import ApiDoc
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 import torch

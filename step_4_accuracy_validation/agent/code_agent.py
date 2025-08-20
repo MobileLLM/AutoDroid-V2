@@ -6,7 +6,7 @@ import re
 import traceback
 import tools as tools
 import agent.environment as environment
-from agent.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, ElementList, regenerate_script, _save2log
+from agent.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, regenerate_script, _save2log
 from agent.script_utils.bug_processor import BugProcessorV3
 from agent.script_utils.solution_generator import SolutionGenerator
 from agent.script_utils.api_doc import ApiDoc
@@ -172,12 +172,12 @@ class CodeAgent():
             env=env, 
             api_name=err.name, 
             prompt_answer_path=os.path.join(self.save_path, f'fix_xpath.json'), 
-            model_name=self.model)
+            model_name=model)
         
         code, plan = bug_processor.get_fixed_solution(# re-generate code
             prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
             env=env,
-            model_name=self.model)
+            model_name=model)
         self.current_plan = plan
         self.env.reset_env(self.app_name, True)
         print(f'Generated code: \n{code}')

@@ -48,7 +48,7 @@ def main():
         doc_name = f"{AgentEnvConfig.DOCS_BASE_DIR}/{app_name}.json"
         agent_logs_path = f"{agent_env.task_output_path}/agent_logs"
 
-        code_agent = CodeAgent(agent_env, app_name, doc_name, agent_logs_path, "CogeAgent", AgentEnvConfig.MODEL)
+        code_agent = CodeAgent(agent_env, app_name, doc_name, agent_logs_path, AgentEnvConfig.MODEL)
 
           #### UNCOMMENT FOR DIRECT SCRIPT DEBUGGING 
 #         code_agent.FREEZED_CODE = True
@@ -59,7 +59,7 @@ def main():
 # '''
 
 
-        code_agent.MAX_RETRY_TIMES = 0
+        code_agent.MAX_RETRY_TIMES = 2
         agent_env.reset_env(app_name)
         
         # complete task
@@ -84,7 +84,7 @@ def main():
       else:
         print(f'Failed task: \n{instruction}')
     
-    tools.dump_json_file(f"{AgentEnvConfig.LOCAL_OUTPUT_PATH}/results.json",{
+    tools.dump_json_file(AgentEnvConfig.LOCAL_OUTPUT_PATH,{
         "succeeded":succeeded,
         "results": results
       })

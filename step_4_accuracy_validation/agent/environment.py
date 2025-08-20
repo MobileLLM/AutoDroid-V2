@@ -495,7 +495,7 @@ class AsyncDroidBotEnv(AsyncEnv):
       event = input_event.ScrollEvent(view=action['view'], direction=action['direction'])
     elif action_type == 'navigate_home':
       event = input_event.KeyEvent(name='HOME')
-    elif action_type == 'navigate_back':
+    elif action_type == 'navigate_back': # 是navigate_back而不是back
       event = input_event.KeyEvent(name='BACK')
     elif action_type == 'open_app': # only open the target app # todo::
       app_name = action['app_name']
@@ -567,3 +567,9 @@ class AsyncDroidBotEnv(AsyncEnv):
   
   def close(self) -> None:
     self.device.disconnect()
+
+  def actions_taken(self) -> list:
+    return
+
+  def reset_env(self, wipe_intermidiate_task_data: bool = False) -> State:
+    return

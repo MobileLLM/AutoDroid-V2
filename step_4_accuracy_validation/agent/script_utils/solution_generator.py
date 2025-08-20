@@ -1,7 +1,7 @@
 import tools as tools
 import agent.environment as environment
 from agent.script_utils.api_doc import ApiDoc
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 import torch
 
 
@@ -115,7 +115,7 @@ Note that:
 - **pay attention to save the changes to the app settings, if save appears in the UI**'''
   
   def load_autodroidv2(self):
-      model_path = "model/autodroidv2"
+      model_path = "autodroidv2"
       tokenizer = AutoTokenizer.from_pretrained(model_path)
       model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, device_map="auto")
       return model, tokenizer
@@ -136,17 +136,18 @@ Note that:
     if self.model_name == "autodroidv2":
       answer = self.query_autodroidv2(prompt)
     else:
-      answer = tools.query_model(model=self.model_name, prompt=prompt)
+      answer = tools.query_model(model=model_name, prompt=prompt)
 
     tools.append_to_txt_file(prompt_answer_path.replace('.json', '.txt'), f'{answer}\n'+('*'*50)+'\n\n')
-    answer = tools.convert_gpt_answer_to_json(
-        answer, model_name=self.model_name, default_value={
+    answer, tokens = tools.convert_gpt_answer_to_json(
+        answer, model_name=model_name, default_value={
             'Plan': '',
             'Script': ''
         })
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,
         'answer': answer,
+        'convert_tokens': tokens
     })
     if 'Script' in answer.keys():
       return answer['Script'], answer['Plan']

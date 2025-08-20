@@ -46,23 +46,20 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
   '''
   max_retry = 8
   if model.startswith("gpt"):
-    cli = OpenAI(base_url=os.getenv('OPENAI_API_URL'),
-                 api_key=os.getenv('OPENAI_API_KEY'))
+    cli = OpenAI(base_url="https://chat1.plus7.plus/v1",
+                 api_key=os.getenv('OPENAI_API_URL'))
+    # cli = OpenAI(base_url="https://api.openai-proxy.org/v1",
+    #              api_key=os.getenv('OPENAI_API_URL')))
     retry = 0
     err = None
     while retry < max_retry:
       try:
-        completion = cli.chat.completions.create(
-            messages=[
-                    {
-                        "role": "user",
-                        "content": prompt,
-                    }
-                ],
-            model=model,
-            timeout=60, 
-            temperature=0.5, 
-        )
+        completion = cli.chat.completions.create(messages=[{
+            "role": "user",
+            "content": prompt,
+        }],
+                                                 model=model,
+                                                 timeout=60)
         break
       except Exception as e:
         print(f'retrying {retry} times...')
@@ -79,7 +76,7 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
     url = 'https://api.openai-proxy.org/anthropic/v1/messages'
 
     headers = {
-        'x-api-key': os.getenv('OPENAI_API_KEY'),
+        'x-api-key': os.getenv('OPENAI_API_URL'),
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
     }
@@ -128,7 +125,7 @@ def dump_json_file(json_path, data):
 def debug_query_gptv2(prompt: str, model_name: str, temperature: float = 0.2, timeout: int = 120):
     client = OpenAI(
         base_url='https://tbnx.plus7.plus/v1',
-        api_key=os.getenv('OPENAI_API_KEY'))
+        api_key=os.getenv('OPENAI_API_URL'))
     completion = client.chat.completions.create(
     messages=[
             {

@@ -28,7 +28,7 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
 def query_model(model, prompt):
     try:
         if model in gpt_models:
-            answer = query_gpt(prompt, model=model)
+            answer = query_gpt(prompt, model_name=model)
         elif model in claude_models:
             answer = query_claude(prompt, model_name=model)
         else:
@@ -46,7 +46,7 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
   '''
   max_retry = 8
   if model.startswith("gpt"):
-    cli = OpenAI(base_url=os.getenv("OPENAI_API_URL"),
+    cli = OpenAI(base_url="https://chat1.plus7.plus/v1",
                  api_key=os.getenv("OPENAI_API_KEY"))
     # cli = OpenAI(base_url="https://api.openai-proxy.org/v1",
     #              api_key=os.getenv("OPENAI_API_KEY")))
@@ -124,7 +124,7 @@ def dump_json_file(json_path, data):
         
 def debug_query_gptv2(prompt: str, model_name: str, temperature: float = 0.2, timeout: int = 120):
     client = OpenAI(
-        base_url=os.getenv("OPENAI_API_URL"),
+        base_url='https://tbnx.plus7.plus/v1',
         api_key=os.getenv("OPENAI_API_KEY"))
     completion = client.chat.completions.create(
     messages=[
@@ -450,10 +450,6 @@ def convert_json_to_str(json_data):
 def write_jsonl_file(file_path, new_data):
     with open(file_path, 'a', encoding='utf-8') as file:
         file.write(json.dumps(new_data, ensure_ascii=False) + '\n')
-
-def append_to_txt_file(txt_path, data):
-  with open(txt_path, 'a', encoding='utf-8') as f:
-    f.write(data)
 
 def load_jsonl_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:

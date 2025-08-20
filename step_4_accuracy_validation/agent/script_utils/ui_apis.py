@@ -561,6 +561,14 @@ Please output only answer that is in the format of the json above and nothing el
       counter += 1
     return target_ele
   def get_and_navigate_target_element(self, api_name, xpath, statement):
+    print(f"--- Looking for api_name: {api_name} ---")
+    print(f"--- Using xpath: {xpath} ---")
+    print("--- Current UI Tree ---")
+    try:
+        print(self.element_tree.str)
+    except Exception as e:
+        print(f"Could not print element tree: {e}")
+    print("--- End of UI Tree ---")
     # print(f"Looking for xpaths:{xpath}")
     # print(self.element_tree.str)
     # time.sleep(10)
@@ -950,7 +958,6 @@ Please output only answer that is in the format of the json above and nothing el
     '''
     close the current window
     '''
-
     # get the currently executing code
     code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
@@ -980,8 +987,7 @@ Please output only answer that is in the format of the json above and nothing el
             'original_code': original_code_line
         },
         screenshot=self.state.screenshot)
-
-    self.env.execute_action({"action_type": "back"})
+    self.env.execute_action({"action_type": "navigate_back"})
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
     
     foreground_activity_name = self.env.foreground_activity_name
@@ -989,7 +995,6 @@ Please output only answer that is in the format of the json above and nothing el
     if foreground_activity_name and foreground_activity_name.startswith('com.google.android.apps.nexuslauncher'):
       self.env.execute_action({"action_type": "open_app", "app_name": self.app_name})
       time.sleep(WAIT_AFTER_ACTION_SECONDS)
-    
     self.check_action_count()
 
 
